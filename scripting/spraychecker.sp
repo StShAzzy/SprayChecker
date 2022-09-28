@@ -6,7 +6,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define PLUGIN_VERSION "1.0.0_debug"
+#define PLUGIN_VERSION "1.0.1"
 
 public Plugin myinfo = 
 {
@@ -39,5 +39,11 @@ public void OnPluginStart()
 	RegAdminCmd("sm_spraycheck", CMDSprayChecking, ADMFLAG_GENERIC, "uso: sm_spraycheck <alvo>");
 	RegAdminCmd("sm_sprayerror", CMDSprayChecking, ADMFLAG_GENERIC, "uso: sm_sprayerror <alvo>");
 	RegAdminCmd("sm_spraystatus", CMDSprayChecking, ADMFLAG_GENERIC, "uso: sm_spraystatus <alvo>");
+	RegConsoleCmd("sm_spraycheckhelp", CMDSprayCheckHelp, "explica o que as siglas significam");
 }
 
+public Action CMDSprayCheckHelp(int client, int args)
+{
+	ReplyToCommand(client, "SD = cl_spraydisable \nSLT = r_spray_lifetime \nMPD = mp_decals \nRD = r_decals \nAD = cl_allowdownload \nAU = cl_allowupload");
+	return Plugin_Handled;
+}

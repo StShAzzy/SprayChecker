@@ -1,4 +1,4 @@
-#define DEBUG
+//#define DEBUG
 int value1 = -1;
 int value2 = -1;
 int value3 = -1;
@@ -9,31 +9,37 @@ int value6 = -1;
 
 public SprayDisable_Query(int target)
 {
+	value1 = -1;
 	QueryClientConVar(target, "cl_spraydisable", OnCvarQueryFinished, value1);
 	return value1;
 }
 public SprayLifetime_Query(int target)
 {
+	value2 = -1;
 	QueryClientConVar(target, "r_spray_lifetime", OnCvarQueryFinished, value2);
 	return value2;
 }
 public MPDecals_Query(int target)
 {
+	value3 = -1;
 	QueryClientConVar(target, "mp_decals", OnCvarQueryFinished, value3);
 	return value3;
 }
 public RDecals_Query(int target)
 {
+	value4 = -1;
 	QueryClientConVar(target, "r_decals", OnCvarQueryFinished, value4);
 	return value4;
 }
 public AllowDownload_Query(int target)
 {
+	value5 = -1;
 	QueryClientConVar(target, "cl_allowdownload", OnCvarQueryFinished, value5);
 	return value5;
 }
 public AllowUpload_Query(int target)
 {
+	value6 = -1;
 	QueryClientConVar(target, "cl_allowupload", OnCvarQueryFinished, value6);
 	return value6;
 }
@@ -86,7 +92,6 @@ public Action CMDSprayChecking(int client, int args) {
 	RDecals_Query(target);
 	AllowDownload_Query(target);
 	AllowUpload_Query(target);
-	ReplyToCommand(client, "SD:%d, SLT:%d, MPD:%d, RD:%d, AD:%d, AU:%d", value1, value2, value3, value4, value5, value6);
 	/*QueryClientConVar(target, "r_spray_lifetime", OnCvarQueryFinished, pack);
 	QueryClientConVar(target, "cl_spraydisable", OnCvarQueryFinished, pack);
 	QueryClientConVar(target, "mp_decals", OnCvarQueryFinished, pack);
@@ -97,7 +102,8 @@ public Action CMDSprayChecking(int client, int args) {
 	return Plugin_Handled;
 }
 
-public void OnCvarQueryFinished(QueryCookie cookie, int client, ConVarQueryResult result, const char[] cvarName, const char[] cvarValue, any value) {
+public void OnCvarQueryFinished(QueryCookie cookie, int client, ConVarQueryResult result, const char[] cvarName, const char[] cvarValue, any value) 
+{
   /*DataPack pack = view_as<DataPack>(value);
   pack.Reset();
 
@@ -140,5 +146,30 @@ public void OnCvarQueryFinished(QueryCookie cookie, int client, ConVarQueryResul
   }
 
   SetCmdReplySource(currentReplySource);*/
-  PrintToChatAll("OnCvarQueryFinished only prints this for now.");
+	
+	if (StrEqual(cvarName, "cl_spraydisable"))
+	{
+		value1 = StringToInt(cvarValue); 	
+	}
+	if (StrEqual(cvarName, "r_spray_lifetime"))
+	{
+		value2 = StringToInt(cvarValue);
+	}
+	if (StrEqual(cvarName, "mp_decals"))
+	{
+		value3 = StringToInt(cvarValue);
+	}
+	if (StrEqual(cvarName, "r_decals"))
+	{
+		value4 = StringToInt(cvarValue);
+	}
+	if (StrEqual(cvarName, "cl_allowdownload"))
+	{
+		value5 = StringToInt(cvarValue);
+	}
+	if (StrEqual(cvarName, "cl_allowupload"))
+	{
+		value6 = StringToInt(cvarValue);
+	}
+	PrintToChatAll("SD:%d, SLT:%d, MPD:%d, RD:%d, AD:%d, AU:%d", value1, value2, value3, value4, value5, value6);
 }
