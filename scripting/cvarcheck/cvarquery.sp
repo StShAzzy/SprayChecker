@@ -7,37 +7,37 @@ int value5 = -1;
 int value6 = -1;
 
 
-public SprayDisable_Query(int target)
+stock SprayDisable_Query(int target)
 {
 	value1 = -1;
 	QueryClientConVar(target, "cl_spraydisable", OnCvarQueryFinished, value1);
 	return value1;
 }
-public SprayLifetime_Query(int target)
+stock SprayLifetime_Query(int target)
 {
 	value2 = -1;
 	QueryClientConVar(target, "r_spray_lifetime", OnCvarQueryFinished, value2);
 	return value2;
 }
-public MPDecals_Query(int target)
+stock MPDecals_Query(int target)
 {
 	value3 = -1;
 	QueryClientConVar(target, "mp_decals", OnCvarQueryFinished, value3);
 	return value3;
 }
-public RDecals_Query(int target)
+stock RDecals_Query(int target)
 {
 	value4 = -1;
 	QueryClientConVar(target, "r_decals", OnCvarQueryFinished, value4);
 	return value4;
 }
-public AllowDownload_Query(int target)
+stock AllowDownload_Query(int target)
 {
 	value5 = -1;
 	QueryClientConVar(target, "cl_allowdownload", OnCvarQueryFinished, value5);
 	return value5;
 }
-public AllowUpload_Query(int target)
+stock AllowUpload_Query(int target)
 {
 	value6 = -1;
 	QueryClientConVar(target, "cl_allowupload", OnCvarQueryFinished, value6);
@@ -45,23 +45,25 @@ public AllowUpload_Query(int target)
 }
 
 
-public Action CMDSprayChecking(int client, int args) {
-  if(args < 1) {
+public Action CMDSprayChecking(int client, int args) 
+{
+	if(args < 1) {
     ReplyToCommand(client, "[SM] Comando so espera por um alvo, e nenhum outro argumento!");
     return Plugin_Handled;
-  }
+	}
 
-  char targetArg[MAX_TARGET_LENGTH];
-  GetCmdArg(1, targetArg, sizeof(targetArg));
+	char targetArg[MAX_TARGET_LENGTH];
+	GetCmdArg(1, targetArg, sizeof(targetArg));
 
-  int target = FindTarget(client, targetArg, true);
-  if(target == -1) {
+	int target = FindTarget(client, targetArg, true);
+	if(target == -1) {
     return Plugin_Handled;
-  }
+	}
 	#if defined DEBUG
-	PrintToChatAll("DEBUG: Target: %d", target);
-	PrintToChatAll("DEBUG: Client: %d", client);
+	PrintToChatAll("[DEBUG] Target: %d", target);
+	PrintToChatAll("[DEBUG] Client: %d", client);
 	#endif
+  	/*
   	//char cvar[512];
   	//GetCmdArg(2, cvar, sizeof(cvar));
 
@@ -76,8 +78,8 @@ public Action CMDSprayChecking(int client, int args) {
     pack.WriteCell(GetClientUserId(client));
 	}
 
- 	pack.WriteCell(GetCmdReplySource());
-
+ 	pack.WriteCell(GetCmdReplySource());*/
+	
 	if(client == 0) 
 	{
     	ReplyToCommand(client, "[SM] Consultando valor da cvar... OBS: caso você esteja utilizando uma ferramenta de RCON, você não verá o resultado");
@@ -92,13 +94,10 @@ public Action CMDSprayChecking(int client, int args) {
 	RDecals_Query(target);
 	AllowDownload_Query(target);
 	AllowUpload_Query(target);
-	/*QueryClientConVar(target, "r_spray_lifetime", OnCvarQueryFinished, pack);
-	QueryClientConVar(target, "cl_spraydisable", OnCvarQueryFinished, pack);
-	QueryClientConVar(target, "mp_decals", OnCvarQueryFinished, pack);
-	QueryClientConVar(target, "r_decals", OnCvarQueryFinished, pack);
-	QueryClientConVar(target, "cl_allowdownload", OnCvarQueryFinished, pack);
-	QueryClientConVar(target, "cl_allowupload", OnCvarQueryFinished, pack);
-	*/
+	CreateTimer(1.5, TextPrinter, client);
+	#if defined DEBUG
+	PrintToChatAll("[DEBUG] Timer Criado");
+	#endif
 	return Plugin_Handled;
 }
 
@@ -171,5 +170,14 @@ public void OnCvarQueryFinished(QueryCookie cookie, int client, ConVarQueryResul
 	{
 		value6 = StringToInt(cvarValue);
 	}
-	PrintToChatAll("SD:%d, SLT:%d, MPD:%d, RD:%d, AD:%d, AU:%d", value1, value2, value3, value4, value5, value6);
+	//PrintToChatAll("SD:%d, SLT:%d, MPD:%d, RD:%d, AD:%d, AU:%d", value1, value2, value3, value4, value5, value6);
 }
+
+	Action TextPrinter(Handle time ,int client)
+	{
+		#if defined DEBUG
+		PrintToChatAll("[DEBUG] Timer Executado");
+		#endif
+		PrintHintText(client, "SD:%d, SLT:%d, MPD:%d, RD:%d, AD:%d, AU:%d", value1, value2, value3, value4, value5, value6);
+		return Plugin_Stop;
+	}
