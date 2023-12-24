@@ -12,7 +12,7 @@ public Plugin myinfo =
 {
 	name = "[TF2] Spray Checker",
 	author = "Peanut",
-	description = "Checks whether or not someone's cvars are set correctly so they display sprays",
+	description = "Checks whether or not someone's cvars are set correctly so they can see sprays",
 	version = PLUGIN_VERSION,
 	url = "https://discord.gg/7sRn8Bt"
 };
@@ -22,7 +22,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	EngineVersion g_engineversion = GetEngineVersion();
 	if (g_engineversion == Engine_Unknown)
 	{
-		PrintToServer("=======[Unknown Engine; Be Aware That This Might Work Properly!]=======");
+		PrintToServer("=======[Unknown Engine; Be Aware That This Might Work Inproperly!]=======");
 		return APLRes_Success;
 	}
 	if (g_engineversion != Engine_TF2)
