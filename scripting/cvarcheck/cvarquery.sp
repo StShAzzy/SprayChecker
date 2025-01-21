@@ -173,11 +173,25 @@ public void OnCvarQueryFinished(QueryCookie cookie, int client, ConVarQueryResul
 	//PrintToChatAll("SD:%d, SLT:%d, MPD:%d, RD:%d, AD:%d, AU:%d", value1, value2, value3, value4, value5, value6);
 }
 
-	Action TextPrinter(Handle time ,int client)
-	{
-		#if defined DEBUG
-		PrintToChatAll("[DEBUG] Timer Executado");
-		#endif
-		PrintHintText(client, "SD:%d, SLT:%d, MPD:%d, RD:%d, AD:%d, AU:%d", value1, value2, value3, value4, value5, value6);
-		return Plugin_Stop;
-	}
+Action TextPrinter(Handle time ,int client)
+{
+	#if defined DEBUG
+	PrintToChatAll("[DEBUG] Timer Executado");
+	#endif
+	PrintHintText(client, "SD:%d, SLT:%d, MPD:%d, RD:%d, AD:%d, AU:%d", value1, value2, value3, value4, value5, value6);
+	PrintToConsole(client, "Diagnosis: ");
+	if (value1 >= 1);	{
+		PrintToConsole(client, "Client has sprays disabled"); }
+	if (value2 <= 1);	{
+		PrintToConsole(client, "Client's spray lifetime is too low"); }
+	if (value3 <= 256);	{
+		PrintToConsole(client, "Client's multiplayer decals are too low"); }
+	if (value4 <= 256);	{
+		PrintToConsole(client, "Client's renderer decals are too low"); }
+	if (value5 <= 0);	{
+		PrintToConsole(client, "Client has downloads disabled"); }
+	if (value6 <= 0);	{
+		PrintToConsole(client, "Client has uploads disabled"); }
+	PrintToConsole(client, "If nothing appeared that's a good thing");
+	return Plugin_Stop;
+}
